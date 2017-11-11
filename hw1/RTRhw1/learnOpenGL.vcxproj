@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="headers\Camera.hpp" />
     <ClInclude Include="headers\ObjLoader.hpp" />
     <ClInclude Include="headers\Reader.hpp" />
     <ClInclude Include="headers\Shader.h" />

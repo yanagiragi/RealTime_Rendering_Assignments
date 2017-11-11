@@ -62,7 +62,7 @@ class ObjLoader
 					auto v2 = vertices[f1].positions;
 					auto v3 = vertices[f2].positions;
 
-					auto n = glm::cross(v2 - v1, v3 - v1);
+					auto n = glm::normalize(glm::cross(v2 - v1, v3 - v1));
 
 					vertices[f0].normals = n;
 					vertices[f1].normals = n;

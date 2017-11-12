@@ -105,50 +105,49 @@ class Behaviour
 
 			glEnable(GL_DEPTH_TEST);
 
+			// initate quaternion
 			q = quaternion(1.0, 0.0, 0.0, 0.0);
 		}
 
 
-		void Behaviour :: Update()
+		void Behaviour::Update()
 		{
 			glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 			glClear(GL_DEPTH_BUFFER_BIT);
-			
+
 			glUseProgram(shaderProgram);
+
+			// "Done it native way"
+			glm::quat MyQuaternion;
+			float RotationAngle = glfwGetTime();
 			
-			// Setup Model Matrixs
-			glm::mat4 M(1.0f);
-				
-			int i = 1;
-			float angle = (glfwGetTime());
-			M = glm::translate(M, vec3(0, 0, 10));
-			M = glm::rotate(M, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-			/*M = glm::rotate(M, glm::radians(90.0f * angle), glm::vec3(0.0f, 1.0f, 0.0f));
-			M = glm::translate(M, vec3(0, 0, 2));
-			M = glm::rotate(M, glm::radians(90.0f * angle), glm::vec3(1.0f, 0.0f, 0.0f));*/
-			
-			
-			float y = angle;// glm::radians(angle);
-			/*glm::vec3 res = q.rotate(glm::vec3(0.0, 0.0, 1.0));
-			q.x = res.x;
-			q.y = res.y;
-			q.z = res.z;
-			q.Normalize();*/
-			
-			//glm::vec3 res = q.rotate(glm::vec3(cos(y), sin(y), 0.0));
-			glm::vec3 res = q.rotate(glm::vec3(cos(y), 0.0, sin(y)));
-			//glm::vec3 res = q.rotate(glm::vec3(sin(y), cos(y), 0.0));
+			// 公轉
+			MyQuaternion = glm::angleAxis(RotationAngle, vec3(0.0, 1.0, 0.0));
+			// q.w = MyQuaternion.w; q.x = MyQuaternion.x; q.y = MyQuaternion.y; q.z = MyQuaternion.z;
+
+			// 自轉
+			MyQuaternion = glm::angleAxis(RotationAngle, vec3(1.0, 0.0, 0.0)) * MyQuaternion;
+			q.w = MyQuaternion.w; q.x = MyQuaternion.x; q.y = MyQuaternion.y; q.z = MyQuaternion.z;
+
+			// End of "Done it native way"
+
+			/*
+			glm::vec3 res = q.rotate(glm::vec3(sin(y), cos(y), 0.0));
 			//res = glm::normalize(res);
-			q.x = res.x;
+			/*q.x = res.x;
 			q.y = res.y;
 			q.z = res.z;
 			q.Normalize();
+			*/
 
+			// Setup Model Matrixs
+			glm::mat4 M(1.0f);
+			M = glm::translate(M, vec3(0, 0, 10));
 			M = M * glm::toMat4(glm::quat(q.w, q.x, q.y, q.z));
 
 			// Setting MVPs
-			MVP = mainCamera.getP() * mainCamera.getV() * M;			
+			MVP = mainCamera.getP() * mainCamera.getV() * M;
 			glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "MVP"), 1, GL_FALSE, &MVP[0][0]);
 
 			glBindVertexArray(VAO);

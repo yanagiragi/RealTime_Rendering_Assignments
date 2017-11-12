@@ -32,6 +32,8 @@ class Behaviour
 
 		float previous_time = glfwGetTime();
 
+		quaternion q;
+
 		/* Functions */
 		
 		void Behaviour::setupCamera()
@@ -103,7 +105,9 @@ class Behaviour
 
 			glEnable(GL_DEPTH_TEST);
 
+			q = quaternion(1.0, 0.0, 0.0, 0.0);
 		}
+
 
 		void Behaviour :: Update()
 		{
@@ -118,16 +122,24 @@ class Behaviour
 				
 			int i = 1;
 			float angle = (glfwGetTime());
-			//M = glm::translate(M, vec3(0, 0, 10));
-			M = glm::rotate(M, glm::radians(90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+			M = glm::translate(M, vec3(0, 0, 10));
+			M = glm::rotate(M, glm::radians(-90.0f), glm::vec3(0.0f, 0.0f, 1.0f));
 			/*M = glm::rotate(M, glm::radians(90.0f * angle), glm::vec3(0.0f, 1.0f, 0.0f));
 			M = glm::translate(M, vec3(0, 0, 2));
 			M = glm::rotate(M, glm::radians(90.0f * angle), glm::vec3(1.0f, 0.0f, 0.0f));*/
 			
-			quaternion q(1.0, 0.0, 0.0, 0.0);
-
-			float y = 1.0 * (angle);
-			glm::vec3 res = q.rotate(glm::vec3(cos(y), sin(y), 0.0));
+			
+			float y = angle;// glm::radians(angle);
+			/*glm::vec3 res = q.rotate(glm::vec3(0.0, 0.0, 1.0));
+			q.x = res.x;
+			q.y = res.y;
+			q.z = res.z;
+			q.Normalize();*/
+			
+			//glm::vec3 res = q.rotate(glm::vec3(cos(y), sin(y), 0.0));
+			glm::vec3 res = q.rotate(glm::vec3(cos(y), 0.0, sin(y)));
+			//glm::vec3 res = q.rotate(glm::vec3(sin(y), cos(y), 0.0));
+			//res = glm::normalize(res);
 			q.x = res.x;
 			q.y = res.y;
 			q.z = res.z;

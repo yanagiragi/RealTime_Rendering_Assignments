@@ -82,7 +82,7 @@ class quaternion
 		glm::vec3 rotate(glm::vec3 rhs)
 		{
 			// q * [0, r] * q.inv()
-			quaternion result = mul(quaternion(0.0, rhs.x, rhs.y, rhs.z)).mul(inverse());
+			quaternion result = mul(quaternion(0.0, rhs.x, rhs.y, rhs.z)).mul(this->inverse());
 			return glm::vec3(rhs.x, rhs.y, rhs.z);
 		}
 };

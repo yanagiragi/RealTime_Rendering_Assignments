@@ -158,7 +158,7 @@
   <ItemGroup>
     <ClCompile Include="headers\glad.c" />
     <ClCompile Include="headers\Utils.cpp" />
-    <ClCompile Include="src\learnOpenGL.cpp" />
+    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Shader.cpp" />
   </ItemGroup>
   <ItemGroup>

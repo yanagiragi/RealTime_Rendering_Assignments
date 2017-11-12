@@ -4,15 +4,13 @@ layout (location = 0) in vec3 pos;
 layout (location = 1) in vec3 normal;
 
 uniform mat4 MVP;
+uniform mat4 AlterM;
 uniform float Time;
 out vec4 ourColor;
 
-struct quaternion {
-	float w, x, y, z;
-};
-
 vec4 q;
-
+mat4 _AlterM;
+mat4 _MVP;
 
 vec4 mul(vec4 lhs, vec4 rhs)
 {
@@ -45,7 +43,7 @@ vec4 rotate(float angle, vec3 rhs)
 	return q;
 }
 
-mat4 MVPRotate()
+mat4 toMat4(vec4 q)
 {
 	mat4 res;
 	
@@ -69,24 +67,27 @@ mat4 MVPRotate()
 	res[3][2] = 0;
 	res[3][3] = 1;	
 
-	return MVP * res;
+	return res;
 }
 
 void main()
 {
 	// init
 	q = vec4(1.0, 0.0, 0.0, 0.0);
+	_AlterM = AlterM;
+	_MVP = MVP;
 
-	// 公轉
-	q = rotate(Time, vec3(0.0, 1.0, 0.0));
-	
 	// 自轉
-	//q = rotate(Time, vec3(1.0, 0.0, 0.0));
-	vec4 tmp = rotate(Time, vec3(1.0, 0.0, 0.0));
-	q = mul(q, tmp);
+	q = rotate(Time, vec3(0.0, 1.0, 0.0));	
 	
-	gl_Position = MVPRotate() * vec4(pos.x, pos.y, pos.z, 1.0);
-	//gl_Position = MVP * vec4(pos.x, pos.y, pos.z, 1.0);
-	ourColor = vec4(normal.x, normal.y, normal.z, 1.0) * sin(Time);
-	//ourColor = vec4(Time / 255.0, 0.0, 0.0, 1.0);
+	// 公轉
+	vec4 tmp = rotate(Time, vec3(1.0, 0.0, 0.0));
+	_AlterM = toMat4(tmp) * _AlterM;
+
+	_MVP = _MVP * _AlterM * toMat4(q);
+	
+	gl_Position = _MVP * vec4(pos.x, pos.y, pos.z, 1.0);
+	//ourColor = vec4(normal.x, normal.y, normal.z, 1.0) * sin(Time);
+	
+	ourColor = vec4(normal.x, normal.y, normal.z, 1.0);
 }

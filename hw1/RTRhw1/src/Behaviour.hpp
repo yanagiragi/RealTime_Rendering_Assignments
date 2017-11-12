@@ -120,7 +120,7 @@ class Behaviour
 
 			// Setup Model Matrixs
 			glm::mat4 M(1.0f);
-			M = glm::translate(M, vec3(0, 0, 10));
+			M = glm::translate(M, vec3(0, 0, 5));
 
 			#pragma region "Done it native way"
 			/*
@@ -166,6 +166,11 @@ class Behaviour
 
 			#pragma region "Done it Yanagi's Shader way"
 				glUniform1f(glGetUniformLocation(shaderProgram, "Time"), previous_time);
+
+				glm::mat4 alterM(1.0f);
+				alterM = glm::translate(alterM, vec3(0, 1.5, 0));
+
+				glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "AlterM"), 1, GL_FALSE, &alterM[0][0]);
 			#pragma endregion			
 
 			// Setting MVPs

@@ -2,7 +2,8 @@
 #ifndef BEHAVIOUR_H
 #define BEHAVIOUR_H
 
-#include <glad/glad.h>
+#include <GL\glew.h>
+
 #include <GLFW/glfw3.h>
 
 #include "Shader.h"

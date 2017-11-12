@@ -3,7 +3,7 @@
 bool Shader::CreateShader(unsigned int &shaderInstance, unsigned int shaderType, const GLchar* shaderSource) {
 	
 	shaderInstance = glCreateShader(shaderType);
-
+	
 	// 1 stands for one string in vertexShaderSource
 	glShaderSource(shaderInstance, 1, &shaderSource, NULL);
 	glCompileShader(shaderInstance);

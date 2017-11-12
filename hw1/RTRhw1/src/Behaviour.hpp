@@ -118,33 +118,55 @@ class Behaviour
 
 			glUseProgram(shaderProgram);
 
-			// "Done it native way"
-			glm::quat MyQuaternion;
-			float RotationAngle = glfwGetTime();
-			
-			// 公轉
-			MyQuaternion = glm::angleAxis(RotationAngle, vec3(0.0, 1.0, 0.0));
-			// q.w = MyQuaternion.w; q.x = MyQuaternion.x; q.y = MyQuaternion.y; q.z = MyQuaternion.z;
-
-			// 自轉
-			MyQuaternion = glm::angleAxis(RotationAngle, vec3(1.0, 0.0, 0.0)) * MyQuaternion;
-			q.w = MyQuaternion.w; q.x = MyQuaternion.x; q.y = MyQuaternion.y; q.z = MyQuaternion.z;
-
-			// End of "Done it native way"
-
-			/*
-			glm::vec3 res = q.rotate(glm::vec3(sin(y), cos(y), 0.0));
-			//res = glm::normalize(res);
-			/*q.x = res.x;
-			q.y = res.y;
-			q.z = res.z;
-			q.Normalize();
-			*/
-
 			// Setup Model Matrixs
 			glm::mat4 M(1.0f);
 			M = glm::translate(M, vec3(0, 0, 10));
-			M = M * glm::toMat4(glm::quat(q.w, q.x, q.y, q.z));
+
+			#pragma region "Done it native way"
+			/*
+				glm::quat MyQuaternion;
+				float RotationAngle = glfwGetTime();
+			
+				// 公轉
+				MyQuaternion = glm::angleAxis(RotationAngle, vec3(0.0, 1.0, 0.0));
+				// q.w = MyQuaternion.w; q.x = MyQuaternion.x; q.y = MyQuaternion.y; q.z = MyQuaternion.z;
+
+				// 自轉
+				MyQuaternion = glm::angleAxis(RotationAngle, vec3(1.0, 0.0, 0.0)) * MyQuaternion;
+				q.w = MyQuaternion.w; q.x = MyQuaternion.x; q.y = MyQuaternion.y; q.z = MyQuaternion.z;
+
+				M = M * glm::toMat4(glm::quat(q.w, q.x, q.y, q.z));
+			*/
+			#pragma endregion			
+
+			#pragma region "Done it Yanagi's class way"
+			/*
+				quaternion MyQuaternion;
+				float RotationAngle = glfwGetTime();
+
+				// 公轉
+				MyQuaternion = q.rotate(RotationAngle, vec3(0.0, 1.0, 0.0));
+				// q.w = MyQuaternion.w; q.x = MyQuaternion.x; q.y = MyQuaternion.y; q.z = MyQuaternion.z;
+
+				// 自轉
+				MyQuaternion = q.rotate(RotationAngle, vec3(1.0, 0.0, 0.0)).mul(MyQuaternion);
+				q.w = MyQuaternion.w; q.x = MyQuaternion.x; q.y = MyQuaternion.y; q.z = MyQuaternion.z;
+
+				M = M * glm::toMat4(glm::quat(q.w, q.x, q.y, q.z));
+			*/
+			/*
+				// Failed way
+				glm::vec3 res = q.rotate(glm::vec3(sin(y), cos(y), 0.0));
+				q.x = res.x;
+				q.y = res.y;
+				q.z = res.z;
+				q.Normalize();
+			*/
+			#pragma endregion
+
+			#pragma region "Done it Yanagi's Shader way"
+				glUniform1f(glGetUniformLocation(shaderProgram, "Time"), previous_time);
+			#pragma endregion			
 
 			// Setting MVPs
 			MVP = mainCamera.getP() * mainCamera.getV() * M;

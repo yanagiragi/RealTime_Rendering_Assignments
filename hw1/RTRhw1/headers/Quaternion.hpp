@@ -65,7 +65,7 @@ class quaternion
 
 		quaternion mul(quaternion rhs)
 		{
-			/*quaternion tmpQ;
+			quaternion tmpQ;
 
 			glm::vec3 vThis(x, y, z);
 			glm::vec3 vRhs(rhs.x, rhs.y, rhs.z);
@@ -77,22 +77,25 @@ class quaternion
 			tmpQ.y = product.y;
 			tmpQ.z = product.z;
 
-			return tmpQ;*/
-
-			glm::quat org = glm::quat(w, x, y, z);
-			glm::quat rrhs = glm::quat(rhs.w, rhs.x, rhs.y, rhs.z);
-			glm::quat res = glm::quat(org.operator*=(rrhs));
-			return quaternion(res.w, res.x, res.y, res.z);
+			return tmpQ;
 		}
 
 
 		glm::vec3 rotate(glm::vec3 rhs)
 		{
 			// q * [0, r] * q.inv()
-			//quaternion result = mul(quaternion(0.0, rhs.x, rhs.y, rhs.z)).mul(this->inverse());
-			//return glm::vec3(rhs.x, rhs.y, rhs.z);
-			auto q = glm::quat(w, x, y, z);
-			return glm::rotate(q, rhs);
+			quaternion result = mul(quaternion(0.0, rhs.x, rhs.y, rhs.z)).mul(this->inverse());
+			return glm::vec3(rhs.x, rhs.y, rhs.z);
+			// auto q = glm::quat(w, x, y, z);
+			// return glm::rotate(q, rhs);
+		}
+
+		quaternion rotate(float angle, glm::vec3 rhs)
+		{
+			float sin = sinf(angle * 0.5f);
+			float cos = cosf(angle * 0.5f);
+
+			return quaternion(cos, rhs.x * sin, rhs.y * sin, rhs.z * sin);
 		}
 };
 

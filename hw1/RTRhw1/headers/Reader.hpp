@@ -1,6 +1,8 @@
 #ifndef  _READER_HPP
 #define _READER_HPP
 
+#define GLM_ENABLE_EXPERIMENTAL
+
 #include <fstream>
 #include <sstream>
 #include <vector>
@@ -30,7 +32,7 @@ class Reader
 			while (std::getline(infile, buffer))
 			{
 				line.push_back(buffer);
-				lineBuffer += buffer;
+				lineBuffer += buffer + '\n';
 			}
 		}
 

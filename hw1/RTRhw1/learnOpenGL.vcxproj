@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="headers\Camera.hpp" />
     <ClInclude Include="headers\ObjLoader.hpp" />
+    <ClInclude Include="headers\Quaternion.hpp" />
     <ClInclude Include="headers\Reader.hpp" />
     <ClInclude Include="headers\Shader.h" />
     <ClInclude Include="headers\Utils.hpp" />
@@ -159,6 +160,11 @@
     <ClCompile Include="headers\Utils.cpp" />
     <ClCompile Include="src\learnOpenGL.cpp" />
     <ClCompile Include="src\Shader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+    <None Include="Resources\fragment.glsl" />
+    <None Include="Resources\vertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

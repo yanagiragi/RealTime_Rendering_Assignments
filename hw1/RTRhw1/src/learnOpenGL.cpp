@@ -8,9 +8,6 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 // settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
-const char* SCR_NAME = "LearnOpenGL";
 
 int main()
 {
@@ -22,15 +19,15 @@ int main()
 	//glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // uncomment this statement to fix compilation on OS X
 
 	// glfw window creation
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, SCR_NAME, NULL, NULL);
-	if (window == NULL)
+	Utils::window = glfwCreateWindow(Utils::SCR_WIDTH, Utils::SCR_HEIGHT, Utils::SCR_NAME, NULL, NULL);
+	if (Utils::window == NULL)
 	{
 		std::cout << "Failed to create GLFW window" << std::endl;
 		glfwTerminate();
 		return -1;
 	}
-	glfwMakeContextCurrent(window);
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	glfwMakeContextCurrent(Utils::window);
+	glfwSetFramebufferSizeCallback(Utils::window, framebuffer_size_callback);
 
 	// glad: load all OpenGL function pointers
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
@@ -44,16 +41,16 @@ int main()
 	mono.Start();
 
 	// render loop
-	while (!glfwWindowShouldClose(window))
+	while (!glfwWindowShouldClose(Utils::window))
 	{
 		// Deal Input
-		mono.Input(window);
+		mono.Input(Utils::window);
 
 		// Main Render Function
 		mono.Update();
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-		glfwSwapBuffers(window);
+		glfwSwapBuffers(Utils::window);
 		glfwPollEvents();
 	}
 

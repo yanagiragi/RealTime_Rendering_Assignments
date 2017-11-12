@@ -8,6 +8,12 @@
 
 namespace Utils{
 
+	GLFWwindow* window;
+	const unsigned int SCR_WIDTH = 800;
+	const unsigned int SCR_HEIGHT = 600;
+	const char* SCR_NAME = "LearnOpenGL";
+
+
 	template<typename Out> void split(const std::string &s, char delim, Out result) {
 		std::stringstream ss(s);
 		std::string item;

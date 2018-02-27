@@ -2,7 +2,7 @@
 
 ## HW1:
 
-* Implement Quaternion roateion in shader
+* Implement Quaternion rotation in shader
 
 * Preview:
 
